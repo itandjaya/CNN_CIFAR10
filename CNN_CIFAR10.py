@@ -69,7 +69,7 @@ def main():
         
         print("Batch_ID:", 1+i_batch, "\n", "#"*35, "\n");
         model.train_NN(x_train, y_train, x_test, y_test);
-        #model.plot_training_model();
+        model.plot_training_model();
     
     ## Test accuracy with test dataset.
     print(  model.test_accuracy(  x_test, y_test));
