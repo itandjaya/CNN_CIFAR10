@@ -49,7 +49,7 @@ def main():
     train_ds, test_ds       =   datasets.cifar10.load_data();
     train_ds, test_ds       =   [train_ds], [test_ds];
     
-    ## 5-batches: train_ds and test_ds are array of batches (images, labels).
+    ## For partitioning data into 5 batches, use below:
     #train_ds, test_ds       =   import_data_from_files();
 
     ## display 5x5 random images to check if data is imported correctly.
@@ -63,7 +63,7 @@ def main():
 
     x_test, y_test  =   test_ds.pop();
 
-    ## Train in 5 batches.
+    ## Train in batches.
 
     for i_batch, (x_train, y_train) in enumerate(train_ds):
         
