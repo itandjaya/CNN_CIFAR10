@@ -1,19 +1,22 @@
 ## CNN_Model.py
 ## Convolution Nets class.
+## Result after 10 epochs:
+## loss: 0.2525 - accuracy: 0.9158 - val_loss: 0.9009 - val_accuracy: 0.7668
 
 from __future__ import division, absolute_import, print_function, unicode_literals;
 
 #import os;
 import tensorflow as tf;
 
-from tensorflow.keras.layers import Dense, Flatten, Conv2D, MaxPooling2D;
+from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, BatchNormalization;
 from tensorflow.keras import Model;
+from tensorflow.keras.regularizers import l1 as l1, l2 as l2;
 
 import matplotlib.pyplot as plt;    #   To display image/plot.
 import numpy as np;
 
 BATCH_SIZE  =   10000;
-EPOCHS      =   50;
+EPOCHS      =   10;
 
 
 
@@ -31,22 +34,46 @@ class   CNN_Model(Model):
 
         ## Initializing the layers.
         #self.L1_input           =   Flatten(input_shape = (32, 32, 3));
-        self.L1_conv            =   Conv2D( 32, (3,3), 
+
+        ## Convo-Layers:
+        self.L1_conv            =   Conv2D( filters = 32, 
+                                            kernel_size = (3,3), 
                                             activation = 'relu',
+                                            kernel_regularizer=l2(0.001),
+                                            padding='same',
+                                            strides=(1, 1),
                                             input_shape = (32,32,3));        
-        self.L2_pooling         =   MaxPooling2D( (2,2));
+        self.L2_pooling         =   MaxPooling2D( pool_size = (2,2));
+        self.L2_batchNorm       =   BatchNormalization();
 
-        self.L3_conv            =   Conv2D( 64, (3,3), 
+        self.L3_conv            =   Conv2D( filters = 64, 
+                                            kernel_size = (3,3),  
+                                            padding='same',
+                                            #kernel_regularizer=l2(0.0005),
+                                            strides=(1, 1),
                                             activation = 'relu');        
-        self.L4_pooling         =   MaxPooling2D( (2,2));
+        self.L4_pooling         =   MaxPooling2D( pool_size = (2,2));
+        self.L4_batchNorm       =   BatchNormalization();
 
-        self.L5_conv            =   Conv2D( 64, (3,3), 
-                                            activation = 'relu');        
+        self.L5_conv            =   Conv2D( filters = 128, 
+                                            kernel_size = (3,3),  
+                                            #kernel_regularizer=l2(0.0005),
+                                            activation = 'relu',
+                                            padding='same',
+                                            strides=(1, 1));  
 
+        self.L5_pooling         =   MaxPooling2D( pool_size = (2,2));
+        self.L5_dropout         =   Dropout(0.25);
+        self.L5_batchNorm       =   BatchNormalization();      
+
+        ## Fully Connected Layers:
+        
         self.L6_flatten         =   Flatten();
+        self.L6_batchNorm       =   BatchNormalization();
         self.L7_dense           =   Dense(  64, activation = 'relu');
         self.L8_output_dense    =   Dense(  10);
 
+        ## Only add Activation softmax
         self.L9_output_softmax =   tf.keras.layers.Softmax();
 
 
@@ -54,14 +81,32 @@ class   CNN_Model(Model):
         self.model = tf.keras.models.Sequential([
                                                     self.L1_conv,
                                                     self.L2_pooling,
+                                                    self.L2_batchNorm,
                                                     self.L3_conv,
                                                     self.L4_pooling,
+                                                    self.L4_batchNorm,
                                                     self.L5_conv,
-                                                    self.L6_flatten ,
-                                                    self.L7_dense,
+                                                    self.L5_pooling ,
+                                                    
+
+                                                    ## FC- layers.
+                                                    #self.L5_dropout,
+                                                    self.L5_batchNorm,
+                                                    
+                                                    self.L6_flatten,
+                                                    self.L6_batchNorm,
+                                                    self.L7_dense,                                                    
                                                     self.L8_output_dense,
                                                     #self.L9_output_softmax,
                                                     ]);
+
+        #self.model  =   tf.keras.applications.ResNet152(
+        #                    include_top=True, weights=None,
+        #                    input_shape = (32,32,3),
+        #                    input_tensor=None,
+        #                    pooling='max', classes=10,
+        #                );
+
         self.compile_model();
 
         self.model.summary();   #display the architecture of our model. 
@@ -71,7 +116,6 @@ class   CNN_Model(Model):
         self.norm_range =   1;
 
         self.set_normalize_feature_params(   a_batch_image_data);
-        print(self.norm_mean, self.norm_range);
 
         return;
     
