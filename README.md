@@ -3,10 +3,10 @@ Classify images from the CIFAR-10 image dataset. Includes image data pre-process
 
 File information:
 acc_plot.png  - Plot of train vs. test_validation accuracy. test_acc converges ~ 0.78%
-CNN_CIFAR10.py
-CNN_Model.py
+CNN_CIFAR10.py - The main function to run data pre-processing, build CNN model, and execute training.
+CNN_Model.py  - Class object to define the CNN model.
 CNN_Model_Stacks.txt  - The summary of the ConvNets network.
-import_export_data.py - Script to import and process the data.
+
 Note:
 1. Input features will be normalized before fed into the model.
 2. Input dataset will be in one-hot data format.
