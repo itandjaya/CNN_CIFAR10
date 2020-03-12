@@ -65,14 +65,12 @@ def main():
 
     ## Train in batches.
 
-    for i_batch, (x_train, y_train) in enumerate(train_ds):
-        
-        print("Batch_ID:", 1+i_batch, "\n", "#"*35, "\n");
-        model.train_NN(x_train, y_train, x_test, y_test);
-        model.plot_training_model();
+    for (x_train, y_train) in train_ds:
+
+        model.train_NN(x_train, y_train, x_test, y_test);   #train data/batch.
     
     ## Test accuracy with test dataset.
-    print(  model.test_accuracy(  x_test, y_test));
+    model.test_accuracy(  x_test, y_test);
 
     return 0;
 
