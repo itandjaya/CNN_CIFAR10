@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt;    #   To display image/plot.
 import numpy as np;
 
 BATCH_SIZE  =   10000;
-EPOCHS      =   10;
+EPOCHS      =   20;
 
 
 
@@ -90,7 +90,7 @@ class   CNN_Model(Model):
                                                     
 
                                                     ## FC- layers.
-                                                    #self.L5_dropout,
+                                                    self.L5_dropout,
                                                     self.L5_batchNorm,
                                                     
                                                     self.L6_flatten,
@@ -154,8 +154,7 @@ class   CNN_Model(Model):
                                             y_output, 
                                             epochs  =   self.epochs,
                                             #validation_split = 0.2,
-                                            #epochs = self.epochs,
-                                            #batch_size=BATCH_SIZE/5,
+                                            batch_size=BATCH_SIZE,
                                             validation_data = (X_test, y_test), 
                                             callbacks = None,                             
                                             verbose = 2);
