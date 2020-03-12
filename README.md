@@ -5,11 +5,11 @@ File information:
 
 acc_plot.png  - Plot of train vs. test_validation accuracy. test_acc converges ~ 0.78%
 
-CNN_CIFAR10.py - The main function to run data pre-processing, build CNN model, and execute training.
+CNN_CIFAR10.py - The main function to run data pre-processing, initiate CNN model, and execute training.
 
-CNN_Model.py  - Class object to define the CNN model.
+CNN_Model.py  - Class object to build the CNN model, including support function, such as plotting, etc.
 
-CNN_Model_Stacks.txt  - The summary of the ConvNets network.
+CNN_Model_Stacks.txt  - The pictorial summary of the ConvNets network.
 
 
 Note:
